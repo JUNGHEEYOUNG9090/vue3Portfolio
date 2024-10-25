@@ -1,12 +1,17 @@
 package com.vue3Test.demo.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -178,7 +183,7 @@ public class Vue3ProjectController {
         }
 	}
 	
-	//carrertext
+	//경력 불러오기
 	@PostMapping("/careerText/{id}")
 	public ResponseEntity<CareerModel>careerText(@PathVariable("id") String id){
 		System.out.println("Request ID: " + id); // ID 값 출력
@@ -198,13 +203,53 @@ public class Vue3ProjectController {
 	    }
 	}
 	
+	//글에 이미지 올렸을 때 이미지파일 저장해는 API
+	@PostMapping("/uploadDevlogImage")
+	public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("image") MultipartFile file) {
+	    String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+	    Path destinationPath = Paths.get("D:/uploads/" + filename);
+	    
+	    try {
+	        Files.copy(file.getInputStream(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
+	    } catch (IOException e) {
+	        e.printStackTrace(); // 오류 메시지를 콘솔에 출력
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "File upload failed")); // 구체적인 오류 메시지 반환
+	    }
+
+	    Map<String, String> response = new HashMap<>();
+	    response.put("filename", filename);
+	    response.put("imageUrl", "http://localhost:8080/images/devlog/" + filename);
+
+	    return ResponseEntity.ok(response);
+	}
+	
+	//글에 이미지 올렸을 때 저장해둔 이미지파일 불러오는 API
+	@GetMapping("/images/devlog/{filename:.+}")
+	  public ResponseEntity<Resource> serveFile(@PathVariable("filename") String filename) {
+		try {
+		      Path file = Paths.get("D:/uploads/").resolve(filename); // 경로 수정
+		      Resource resource = new UrlResource(file.toUri());
+
+		      if (!resource.exists() || !resource.isReadable()) {
+		          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 404 오류 처리
+		      }
+		      String encodedFileName = URLEncoder.encode(resource.getFilename(), StandardCharsets.UTF_8);
+		      return ResponseEntity.ok()
+		            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + encodedFileName + "\"")
+		            .body(resource);
+		} catch (MalformedURLException e) {
+		      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 잘못된 URL 요청 처리
+		} catch (IOException e) {
+		      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // 내부 서버 오류 처리
+		}
+	}
+	
 	//devlog 이미지 저장
 	@PostMapping("/uploadDevImage")
 	public ResponseEntity<String> uploadDevImage(@RequestParam("file") MultipartFile file) {
 		String fileName = file.getOriginalFilename();
 		Path destinationFile = Paths.get("D:/uploads/").resolve(fileName).normalize();
-		    
-	    
+		   
 		try {
 	        Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
 	    } catch (IOException e) {
@@ -214,33 +259,12 @@ public class Vue3ProjectController {
 	    // Return the HTTP URL for the uploaded image
 	    String imageUrl = "http://localhost:8080/images/devlog/" + fileName;
 	    return ResponseEntity.ok(imageUrl);
-	}
-	
-	//devlog리스트의 이미지 불러오기
-	@GetMapping("/images/devlog/{fileName}") 
-	public ResponseEntity<Resource> serveImage(@PathVariable("fileName") String fileName) {
-	    System.out.println("fileName :" + fileName); 
-	    try {
-	        Path filePath = Paths.get("D:/uploads/" + fileName);
-	        Resource resource = new UrlResource(filePath.toUri());
-
-	        if (resource.exists() || resource.isReadable()) {
-	            return ResponseEntity.ok()
-	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-	                .body(resource);
-	        } else {
-	            throw new RuntimeException("Could not read the file!");
-	        }
-	    } catch (MalformedURLException e) {
-	        throw new RuntimeException("Error: " + e.getMessage());
-	    }
-	}
-	
+	}	
 	
 	//devlog리스트 불러오기
 	@GetMapping("/devLoglist")
 	public List<DevLogDTO> getAllDevLogsList() {
-		List<DevLogModel> devLogModel= devLogService.findAllDevLogList();
+		List<DevLogModel> devLogModel= devLogService.findAllByOrderByUpdateDtDesc();
 		
 		return devLogModel.stream()
 				.map(log -> {
@@ -273,14 +297,16 @@ public class Vue3ProjectController {
     }
 	
 	//devlog수정
-	@PutMapping("/updateDevLog/{id}")
+	@PutMapping("/updateDevLogEdit/{id}")
 	public ResponseEntity<?> updateDevLog(@PathVariable("id") Long id, @RequestBody DevLogDTO devLogDTO) {
 	    // 데이터베이스에서 해당 id에 해당하는 개발 일지 찾기
 		DevLogModel devLogModel = devLogService.findById(id);
 	    
+		devLogModel.setTitle(devLogDTO.getTitle());
 		devLogModel.setContent(devLogDTO.getContent());
 		devLogModel.setUpdate_user(devLogDTO.getUpdate_user());
 		devLogModel.setUpdate_dt(devLogDTO.getUpdate_dt());
+		devLogModel.setCoverImage(devLogDTO.getCoverImage());
 		
 		devLogService.saveUpdateData(devLogModel); // 데이터 저장
 		

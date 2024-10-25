@@ -33,8 +33,8 @@ public class DevLogService {
 	}
 	
 	// DevLogList
-    public List<DevLogModel> findAllDevLogList(){
-    	return devLogRepository.findAll();
+    public List<DevLogModel> findAllByOrderByUpdateDtDesc(){
+    	return devLogRepository.findAllByOrderByUpdateDtDesc();
     }
     
     // DevLog id 가져오기
