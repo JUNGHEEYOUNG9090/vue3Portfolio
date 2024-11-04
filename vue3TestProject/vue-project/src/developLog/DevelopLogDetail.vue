@@ -74,7 +74,6 @@ const fetchDevLogDetail = async id => {
 		imgElements.forEach(img => {
 			imageUrls.value.push(img.src); // src를 imageUrls 배열에 추가
 		});
-		imageUrls.value = []; // 초기화
 	} catch (error) {
 		console.error('데이터 로드 에러:', error);
 	}
@@ -115,5 +114,14 @@ img {
 	max-width: 100%; /* 부모 컨테이너의 가로폭에 맞춤 */
 	height: 100%; /* 이미지 비율 유지 */
 	width: 100%; /* 이미지가 가로 100%를 차지하도록 강제 */
+}
+
+.outlined-input {
+	width: 100%;
+	border: 1px solid;
+	border-radius: 4px;
+	padding: 8px;
+	outline: none;
+	transition: border-color 0.3s;
 }
 </style>

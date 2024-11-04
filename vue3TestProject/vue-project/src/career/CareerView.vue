@@ -14,8 +14,8 @@
 
 							<v-list>
 								<v-list-item
-									v-for="(item, index) in items"
-									:key="index"
+									v-for="item in items"
+									:key="item.id"
 									@click="selectItem(item.id)"
 								>
 									<v-list-item-title>{{ item.year }}</v-list-item-title>
@@ -31,8 +31,8 @@
 						<h3>{{ selectedItem.id }}년</h3>
 						<v-list>
 							<v-list-item
-								v-for="(career, index) in selectedItem.careers"
-								:key="index"
+								v-for="career in selectedItem.careers"
+								:key="career.id"
 							>
 								<GridComponent
 									v-if="career"
@@ -83,7 +83,7 @@ const selectItem = id => {
 
 <style scoped>
 .background {
-	background-image: url('images/4.jpg'); /* 배경 이미지 설정 */
+	background-image: url('images/carrerBack.jpg'); /* 배경 이미지 설정 */
 	background-size: 100%;
 	background-repeat: repeat;
 	max-width: 100%; /* 그리드의 너비에 맞춤 */
@@ -91,8 +91,5 @@ const selectItem = id => {
 }
 .pre-line {
 	white-space: pre-wrap;
-}
-h3 {
-	font-size: 1vw; /* 뷰포트 너비의 4% */
 }
 </style>

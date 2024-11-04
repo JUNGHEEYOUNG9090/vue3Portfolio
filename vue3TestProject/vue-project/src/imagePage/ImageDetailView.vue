@@ -109,8 +109,8 @@ const route = useRoute();
 const cardText = ref('');
 const selectedFile = ref(null);
 const uploadedFileName = ref('');
-const dialogSave = ref(false); // 다이얼로그 상태 변수
-const dialogDelete = ref(false); // 다이얼로그 상태 변수
+const dialogSave = ref(false);
+const dialogDelete = ref(false);
 const uploadedImageUrl = ref(null); // 미리보기 이미지를 저장할 변수
 const today = new Date();
 const imageId = route.params.id; // 라우트에서 id 가져오기
@@ -129,7 +129,7 @@ const fetchImageData = async () => {
 		const response = await axios.get(
 			`http://localhost:8080/images/${imageId}`, // URL 수정
 		);
-		uploadedImageUrl.value = `http://localhost:8080/files/${response.data.image_name}`; // 응답 데이터의 프로퍼티 이름 확인
+		uploadedImageUrl.value = `http://localhost:8080/files/${response.data.image_name}`;
 		cardText.value = response.data.image_text; // 응답 데이터의 프로퍼티 이름 확인
 		uploadedFileName.value = response.data.image_name;
 	} catch (error) {
@@ -168,7 +168,7 @@ const updateData = async () => {
 	formData.append('updateUser', 'admin');
 
 	try {
-		const response = await axios.post(
+		const response = await axios.put(
 			`http://localhost:8080/updateImageCard/${imageId}`,
 			formData,
 		);

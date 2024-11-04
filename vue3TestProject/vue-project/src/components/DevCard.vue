@@ -29,7 +29,11 @@
 				</v-col>
 				<v-col cols="3" class="pa-4">
 					<v-img
-						:src="devLog.coverImage"
+						:src="
+							devLog.coverImage
+								? devLog.coverImage
+								: require('images/not_found_image.jpg')
+						"
 						:alt="devLog.title"
 						max-height="100px"
 						width="auto"
@@ -79,8 +83,8 @@ const truncatedContent = computed(() => {
 	// 모든 HTML 태그 제거
 	content = content.replace(/<\/?[^>]+(>|$)/g, ''); // 정규 표현식으로 HTML 태그 제거
 
-	// 길이가 100자보다 크면 첫 100자만 반환하고, 그 뒤에 ...을 붙임
-	return content.length > 100 ? content.substring(0, 100) + '...' : content;
+	// 길이가 100자보다 크면 첫 150자만 반환하고, 그 뒤에 ...을 붙임
+	return content.length > 150 ? content.substring(0, 150) + '...' : content;
 });
 </script>
 

@@ -19,10 +19,15 @@
 				<v-row>
 					<v-col cols="12" md="2">
 						<v-sheet
-							class="d-flex justify-center py-4"
-							min-height="268"
+							min-height="300"
 							rounded="lg"
-							max-width="150"
+							max-width="160"
+							style="
+								background-color: beige;
+								display: flex;
+								align-items: center;
+								justify-content: center;
+							"
 						>
 							<MyPhoto></MyPhoto> </v-sheet
 					></v-col>
@@ -43,7 +48,7 @@
 import TheView from '@/layout/TheView.vue';
 import MyPhoto from '@/components/MyPhoto.vue';
 const links = [
-	{ id: 1, menuname: 'Dashboard', to: '/' },
+	{ id: 1, menuname: 'Home', to: '/' },
 	{ id: 2, menuname: 'Image', to: '/imagelist' },
 	{ id: 3, menuname: 'Career', to: '/Career' },
 	{ id: 4, menuname: 'DevLog', to: '/DevelopLogList' },
