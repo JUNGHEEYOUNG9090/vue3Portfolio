@@ -1,6 +1,5 @@
 package com.vue3Test.demo.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
@@ -12,11 +11,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +33,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.vue3Test.demo.DTO.DevLogDTO;
 import com.vue3Test.demo.DTO.ImageDTO;
-import com.vue3Test.demo.model.CareerModel;
+import com.vue3Test.demo.DTO.PostsDTO;
 import com.vue3Test.demo.model.DevLogModel;
 import com.vue3Test.demo.model.ImageModel;
 import com.vue3Test.demo.model.UserModel;
-import com.vue3Test.demo.service.CarrerService;
 import com.vue3Test.demo.service.DevLogService;
 import com.vue3Test.demo.service.ImageService;
+import com.vue3Test.demo.service.PostsService;
 import com.vue3Test.demo.service.UserService;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -53,9 +54,9 @@ public class Vue3ProjectController {
 	@Autowired
 	private ImageService imageService;
 	@Autowired
-	private CarrerService carrerService;
-	@Autowired
 	private DevLogService devLogService;
+	@Autowired
+	private PostsService postsService;
 	
 	@GetMapping("/api/users")
     public List<UserModel> getAllUsers() {
@@ -102,7 +103,7 @@ public class Vue3ProjectController {
         } catch (IOException e) {
             System.err.println("파일 이름: " + file.getOriginalFilename());
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("저장 중 오류 발생: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장 실패: " + e.getMessage());
         }
     }
 	
@@ -137,7 +138,7 @@ public class Vue3ProjectController {
     }
 	
 	//imageupdate
-	@PostMapping("/updateImageCard/{id}")
+	@PutMapping("/updateImageCard/{id}")
 	public ResponseEntity<?> updateImage(
 			@PathVariable("id") Long id,
 	        @RequestParam(value = "file", required = false) MultipartFile file,
@@ -162,7 +163,7 @@ public class Vue3ProjectController {
 		        imageInfo.setImage_name(fileName); // 파일명 업데이트
 		        imageInfo.setImage_src("D:/uploads/" + fileName); // 파일 경로 저장
 		    } catch (IOException e) {
-		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장 중 오류가 발생했습니다.");
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장 실패: " + e.getMessage());
 		    }
 		}
 
@@ -183,15 +184,6 @@ public class Vue3ProjectController {
         }
 	}
 	
-	//경력 불러오기
-	@PostMapping("/careerText/{id}")
-	public ResponseEntity<CareerModel>careerText(@PathVariable("id") String id){
-		System.out.println("Request ID: " + id); // ID 값 출력
-		CareerModel careermodel = carrerService.getCareerById(id);
-        return ResponseEntity.ok(careermodel);
-
-	}
-	
 	//devlog 정보 저장
 	@PostMapping("/saveDevLog")
 	public ResponseEntity<String> saveDevLog(@RequestBody DevLogDTO devLogDTO) {
@@ -210,10 +202,12 @@ public class Vue3ProjectController {
 	    Path destinationPath = Paths.get("D:/uploads/" + filename);
 	    
 	    try {
+	    	// 디렉토리가 존재하지 않으면 생성
+	        Files.createDirectories(destinationPath.getParent());
 	        Files.copy(file.getInputStream(), destinationPath, StandardCopyOption.REPLACE_EXISTING);
 	    } catch (IOException e) {
 	        e.printStackTrace(); // 오류 메시지를 콘솔에 출력
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "File upload failed")); // 구체적인 오류 메시지 반환
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "파일 저장 실패")); // 구체적인 오류 메시지 반환
 	    }
 
 	    Map<String, String> response = new HashMap<>();
@@ -251,9 +245,11 @@ public class Vue3ProjectController {
 		Path destinationFile = Paths.get("D:/uploads/").resolve(fileName).normalize();
 		   
 		try {
+			// 폴더가 존재하지 않으면 생성
+	        Files.createDirectories(destinationFile.getParent());
 	        Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
 	    } catch (IOException e) {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to store file");
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장 실패: " + e.getMessage());
 	    }
 	    
 	    // Return the HTTP URL for the uploaded image
@@ -263,33 +259,15 @@ public class Vue3ProjectController {
 	
 	//devlog리스트 불러오기
 	@GetMapping("/devLoglist")
-	public List<DevLogDTO> getAllDevLogsList() {
-		List<DevLogModel> devLogModel= devLogService.findAllByOrderByUpdateDtDesc();
-		
-		return devLogModel.stream()
-				.map(log -> {
-		            Long id = log.getId();
-		            String title = log.getTitle();
-		            String coverImage = log.getCoverImage();
-		            String createDt = log.getCreate_dt();
-		            String createUser = log.getCreate_user();
-		            String updateDt = log.getUpdate_dt();
-		            String updateUser = log.getUpdate_user();
-		            String content = log.getContent();
-		            		
-		            return new DevLogDTO(id, title, coverImage, content, createDt, createUser, updateDt, updateUser);
-		        })
-		        .collect(Collectors.toList());
-	}
+	 public List<DevLogModel> getAllDevLogsList() {
+        return devLogService.findAllByOrderByUpdateDtDesc();
+    }
 	
 	//devlog디테일 불러오기
 	@GetMapping("devlogDetail/{id}")
 	public ResponseEntity<DevLogModel> getDevLogById(@PathVariable("id") Long id) {
         DevLogModel devLogModel = devLogService.findById(id);
         if (devLogModel != null) {
-            // 이미지 URL을 필요에 맞게 수정
-            String imageUrl = "/images/devlog/" + devLogModel.getCoverImage();
-            devLogModel.setCoverImage(imageUrl);
             return ResponseEntity.ok(devLogModel);
         } else {
             return ResponseEntity.notFound().build();
@@ -324,4 +302,10 @@ public class Vue3ProjectController {
 	        return ResponseEntity.status(500).body("삭제 중 오류 발생: " + e.getMessage());
 	    }
 	}
+	
+	@GetMapping("/posts")
+	public Page<?> getAllPosts(@RequestParam(name = "page") int page, @RequestParam(name = "size") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+        return postsService.getAllPosts(pageable);
+    }
 }
