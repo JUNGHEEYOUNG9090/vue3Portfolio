@@ -260,7 +260,7 @@ public class Vue3ProjectController {
 	//devlog리스트 불러오기
 	@GetMapping("/devLoglist")
 	 public List<DevLogModel> getAllDevLogsList() {
-        return devLogService.findAllByOrderByUpdateDtDesc();
+        return devLogService.findAllByOrderByIdDesc();
     }
 	
 	//devlog디테일 불러오기
