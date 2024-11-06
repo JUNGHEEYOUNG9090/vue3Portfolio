@@ -35,7 +35,9 @@
 							<v-col cols="3">GitHub </v-col>
 							<v-divider vertical></v-divider>
 							<v-col
-								>https://github.com/JUNGHEEYOUNG9090/vue3Portfolio.git</v-col
+								><a href="https://github.com/JUNGHEEYOUNG9090/vue3Portfolio.git"
+									>https://github.com/JUNGHEEYOUNG9090/vue3Portfolio.git</a
+								></v-col
 							>
 						</v-row>
 					</v-card-text>

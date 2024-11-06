@@ -6,6 +6,7 @@
 					prepend-icon="mdi-tools"
 					title="포트폴리오 제작에 사용된 기술들"
 				></v-list-item>
+				<v-divider :thickness="2"></v-divider>
 				<v-list-group value="Vue3.js">
 					<template v-slot:activator="{ props }">
 						<v-list-item v-bind="props" title="Vue3.js"></v-list-item>
@@ -67,8 +68,8 @@
 						<template v-slot:activator="{ props }">
 							<v-icon>mdi-arrow-right-bold</v-icon
 							><span>
-								본 포트폴리오의 형상관리 및 본 포트폴리오를 GitHub에
-								업로드시키기 위해 사용하였니다.
+								본 포트폴리오의 형상관리 및 GitHub에 업로드시키기 위해 사용
+								하였습니다.
 							</span>
 						</template>
 					</v-list-group>
