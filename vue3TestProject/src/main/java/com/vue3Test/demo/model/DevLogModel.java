@@ -15,11 +15,8 @@ public class DevLogModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
-
     @Lob  // Large Object로 선언하여 대량의 데이터를 저장
-    @Column(nullable = false, columnDefinition = "TEXT")
+    private String title;
     private String content;
     private String coverImage;
     private String create_dt;
