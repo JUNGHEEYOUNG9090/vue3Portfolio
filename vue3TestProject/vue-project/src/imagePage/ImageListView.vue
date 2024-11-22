@@ -21,7 +21,7 @@
 				<v-col v-for="image in images" :key="image.id" cols="3">
 					<image-card
 						:imageId="image.image_id"
-						:imageSrc="`http://54.180.213.168:8080/images/${image_id}`"
+						:imageSrc="`http://54.180.213.168:8080/files/${image.image_name}`"
 						:text="image.image_text"
 						@click="goDetailPage(image.image_id)"
 					></image-card>

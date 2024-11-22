@@ -113,7 +113,7 @@ const dialogSave = ref(false);
 const dialogDelete = ref(false);
 const uploadedImageUrl = ref(null); // 미리보기 이미지를 저장할 변수
 const today = new Date();
-const imageId = route.params.image_id; // 라우트에서 id 가져오기
+const imageId = route.params.id; // 라우트에서 id 가져오기
 
 const formatDateToYYYYMMDD = date => {
 	const year = date.getFullYear();
