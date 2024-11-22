@@ -10,7 +10,7 @@
 				max-width="100%"
 				max-height="100%"
 				cover
-				:src="myPhoto"
+				:src="`http://54.180.213.168:8080/images/myPhoto.jpg`"
 				style="border-radius: 50%; overflow: hidden"
 				alt="이미지를 찾을 수 없습니다"
 			></v-img>
@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-const myPhoto = 'http://54.180.213.168:8080/images/myPhoto.jpg';
+const myPhoto = 'myPhoto.jpg';
 </script>
 
 <style scoped></style>
