@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -124,6 +126,31 @@ public class Vue3ProjectController {
 	            return ResponseEntity.badRequest().build();
 	        }
 	    }
+	
+	@GetMapping("/Public/images/{fileName}")
+	public ResponseEntity<Resource> getPublicImage(@PathVariable("fileName") String fileName) {
+	    try {
+	        // 변경된 경로: "/images/Main/{fileName}"
+	        Path filePath = Paths.get("/home/ec2-user/public/images/" + fileName).normalize();
+
+	        // 이미지 파일을 Resource로 읽어오기
+	        Resource resource = new FileSystemResource(filePath);
+
+	        // 파일이 존재하면 응답
+	        if (resource.exists()) {
+	            return ResponseEntity.ok()
+	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+	                .contentType(MediaType.IMAGE_JPEG)  // 이미지 타입에 맞게 설정 (예: JPEG, PNG 등)
+	                .body(resource);
+	        } else {
+	            // 파일이 존재하지 않으면 404 응답
+	            return ResponseEntity.notFound().build();
+	        }
+	    } catch (Exception e) {
+	        // 예외 발생 시 400 Bad Request 응답
+	        return ResponseEntity.badRequest().build();
+	    }
+	}
 	
 	 
 	//imagedetail
