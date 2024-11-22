@@ -125,24 +125,6 @@ public class Vue3ProjectController {
 	        }
 	    }
 	
-	@GetMapping("/images/{fileName}") // 이미지게시판이 아닌 이미지 불러올 때
-    public ResponseEntity<Resource> getImage2(@PathVariable("fileName") String fileName) {
-        try {
-            Path filePath = Paths.get("public/images").resolve(fileName).normalize();
-            Resource resource = new UrlResource(filePath.toUri());
-
-            if (resource.exists()) {
-                return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (MalformedURLException e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-	
 	 
 	//imagedetail
 	@GetMapping("/images/{id}")
