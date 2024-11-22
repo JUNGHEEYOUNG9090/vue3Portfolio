@@ -2,7 +2,7 @@
 	<div class="background">
 		<v-container>
 			<div>
-				<v-container class="grid-background">
+				<v-container class="background">
 					<v-row>
 						<h2 class="pa-4" style="color: #ff9800">{{ company }}</h2>
 					</v-row>
