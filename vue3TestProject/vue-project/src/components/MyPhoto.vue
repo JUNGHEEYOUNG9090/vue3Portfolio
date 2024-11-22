@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-const myPhoto = 'http://54.180.213.16/images/myPhoto.jpg';
+const myPhoto = '/images/myPhoto.jpg';
 </script>
 
 <style scoped></style>
