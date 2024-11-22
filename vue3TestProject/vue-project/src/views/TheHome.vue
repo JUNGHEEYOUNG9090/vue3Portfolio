@@ -153,7 +153,7 @@ onMounted(fetchPosts);
 	border: 1px solid;
 }
 .background-container {
-	background-image: url('/images/pikachu.png'); /* public 폴더 안에 이미지가 있을 때 */
+	background-image: url('http://54.180.213.168:8080/images/pikachu.png'); /* public 폴더 안에 이미지가 있을 때 */
 	background-size: 40vh;
 	background-position: right;
 }
