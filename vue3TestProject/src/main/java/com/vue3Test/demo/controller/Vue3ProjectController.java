@@ -125,7 +125,6 @@ public class Vue3ProjectController {
 	        }
 	    }
 	
-	 
 	//imagedetail
 	@GetMapping("/images/{id}")
     public ResponseEntity<ImageDTO> getImageById(@PathVariable("id") Long id) {
