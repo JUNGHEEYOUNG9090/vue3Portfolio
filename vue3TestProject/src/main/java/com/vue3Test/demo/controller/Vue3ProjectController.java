@@ -127,7 +127,7 @@ public class Vue3ProjectController {
 	        }
 	    }
 	
-	@GetMapping("/Public/images/{fileName}")
+	@GetMapping("/public/images/{fileName}")
 	public ResponseEntity<Resource> getPublicImage(@PathVariable("fileName") String fileName) {
 	    try {
 	        // 변경된 경로: "/images/Main/{fileName}"
