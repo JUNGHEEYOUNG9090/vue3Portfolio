@@ -83,7 +83,7 @@ const selectItem = id => {
 
 <style scoped>
 .background {
-	background-image: url('images/carrerBack.jpg'); /* 배경 이미지 설정 */
+	background-image: url('http://54.180.213.168/images/carrerBack.jpg'); /* 배경 이미지 설정 */
 	background-size: 100%;
 	background-repeat: repeat;
 	max-width: 100%; /* 그리드의 너비에 맞춤 */

@@ -45,9 +45,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")  // Vue가 실행되는 주소와 포트
+@CrossOrigin(origins = "http://54.180.213.168:3000")  // Vue가 실행되는 주소와 포트
 public class Vue3ProjectController {
-	private final Path fileStorageLocation = Paths.get("D:/uploads").toAbsolutePath().normalize();
+	private final Path fileStorageLocation = Paths.get("/home/ec2-user/uploads/").toAbsolutePath().normalize();
 	
 	@Autowired
 	private UserService userService;
@@ -91,7 +91,7 @@ public class Vue3ProjectController {
             ImageModel imageInfo = new ImageModel();
             imageInfo.setImage_name(fileName);
             imageInfo.setImage_text(text);
-            imageInfo.setImage_src("D:/uploads/" + fileName); // 파일 경로 저장
+            imageInfo.setImage_src("/home/ec2-user/uploads/" + fileName); // 파일 경로 저장
             imageInfo.setCrate_dt(createDate);;
             imageInfo.setCrete_user(createUser);
             imageInfo.setUpdate_dt(updateDate);
@@ -161,7 +161,7 @@ public class Vue3ProjectController {
 		    try {
 		        String fileName = imageService.saveImage(file); // 파일 저장
 		        imageInfo.setImage_name(fileName); // 파일명 업데이트
-		        imageInfo.setImage_src("D:/uploads/" + fileName); // 파일 경로 저장
+		        imageInfo.setImage_src("/home/ec2-user/uploads/" + fileName); // 파일 경로 저장
 		    } catch (IOException e) {
 		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장 실패: " + e.getMessage());
 		    }
@@ -199,7 +199,7 @@ public class Vue3ProjectController {
 	@PostMapping("/uploadDevlogImage")
 	public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("image") MultipartFile file) {
 	    String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-	    Path destinationPath = Paths.get("D:/uploads/" + filename);
+	    Path destinationPath = Paths.get("/home/ec2-user/uploads/" + filename);
 	    
 	    try {
 	    	// 디렉토리가 존재하지 않으면 생성
@@ -212,7 +212,7 @@ public class Vue3ProjectController {
 
 	    Map<String, String> response = new HashMap<>();
 	    response.put("filename", filename);
-	    response.put("imageUrl", "http://localhost:8080/images/devlog/" + filename);
+	    response.put("imageUrl", "/home/ec2-user/uploads/" + filename);
 
 	    return ResponseEntity.ok(response);
 	}
@@ -221,7 +221,7 @@ public class Vue3ProjectController {
 	@GetMapping("/images/devlog/{filename:.+}")
 	  public ResponseEntity<Resource> serveFile(@PathVariable("filename") String filename) {
 		try {
-		      Path file = Paths.get("D:/uploads/").resolve(filename); // 경로 수정
+		      Path file = Paths.get("/home/ec2-user/uploads/").resolve(filename); // 경로 수정
 		      Resource resource = new UrlResource(file.toUri());
 
 		      if (!resource.exists() || !resource.isReadable()) {
@@ -237,25 +237,6 @@ public class Vue3ProjectController {
 		      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // 내부 서버 오류 처리
 		}
 	}
-	
-	//devlog 이미지 저장
-	@PostMapping("/uploadDevImage")
-	public ResponseEntity<String> uploadDevImage(@RequestParam("file") MultipartFile file) {
-		String fileName = file.getOriginalFilename();
-		Path destinationFile = Paths.get("D:/uploads/").resolve(fileName).normalize();
-		   
-		try {
-			// 폴더가 존재하지 않으면 생성
-	        Files.createDirectories(destinationFile.getParent());
-	        Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
-	    } catch (IOException e) {
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장 실패: " + e.getMessage());
-	    }
-	    
-	    // Return the HTTP URL for the uploaded image
-	    String imageUrl = "http://localhost:8080/images/devlog/" + fileName;
-	    return ResponseEntity.ok(imageUrl);
-	}	
 	
 	//devlog리스트 불러오기
 	@GetMapping("/devLoglist")

@@ -33,7 +33,7 @@ public class ImageService {
     //ImageCreate
     public String saveImage(MultipartFile file) throws IOException {
     	 // 파일 저장 경로 설정
-        String uploadDir = "D:\\uploads\\"; // 적절한 경로로 설정
+        String uploadDir = "/home/ec2-user/uploads/"; // 적절한 경로로 설정
         File directory = new File(uploadDir);
         if (!directory.exists()) {
             directory.mkdirs(); // 디렉토리가 없으면 생성

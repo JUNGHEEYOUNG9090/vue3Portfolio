@@ -64,7 +64,7 @@ export const careerData = [
 		careers: [
 			{
 				company: '해오름인포텍 - LGCNS',
-				period: '2021.01 ~ 2022.06',
+				period: '2021.01 ~ 2021.06',
 				work: `- as-is->to-be 작업
 - 전자정부프레임워크로 화면 전환 작업
 - MySQL->Oracle 변환 후 리포트 툴로 리포트화`,

@@ -6,7 +6,7 @@ import { loadFonts } from './plugins/webfontloader';
 import axios from 'axios';
 
 loadFonts();
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = 'http://54.180.213.168:8080';
 
 const app = createApp(App);
 app.config.globalProperties.$axios = axios;

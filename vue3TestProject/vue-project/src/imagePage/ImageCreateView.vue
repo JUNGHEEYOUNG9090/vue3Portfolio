@@ -137,7 +137,7 @@ const saveData = async () => {
 
 	try {
 		const response = await axios.post(
-			'http://localhost:8080/saveImageCard',
+			'http://54.180.213.168:8080/saveImageCard',
 			formData,
 		);
 		console.log('저장 성공:', response.data);

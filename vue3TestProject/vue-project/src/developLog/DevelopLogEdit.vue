@@ -121,7 +121,7 @@ const fetchDevLogData = async () => {
 
 	try {
 		const response = await axios.get(
-			`http://localhost:8080/devlogDetail/${id}`,
+			`http://54.180.213.168:8080/devlogDetail/${id}`,
 		);
 		const devlog = response.data;
 
@@ -151,10 +151,10 @@ const addImage = async () => {
 				console.log(coverImage.value);
 
 				const response = await axios.post(
-					'http://localhost:8080/uploadDevlogImage',
+					'http://54.180.213.168:8080/uploadDevlogImage',
 					formData,
 				);
-				const imageUrl = `http://localhost:8080/images/devlog/${response.data.filename}`; // 서버 URL 사용
+				const imageUrl = `http://54.180.213.168:8080/images/devlog/${response.data.filename}`; // 서버 URL 사용
 				console.log('Image URL:', imageUrl); // 이미지 URL 확인
 				if (imageUrl) {
 					editor.value
@@ -209,7 +209,7 @@ const updateData = async () => {
 		console.log('coverImage : ', devlogData.coverImage);
 		const id = route.params.id;
 		const response = await axios.put(
-			`http://localhost:8080/updateDevLogEdit/${id}`,
+			`http://54.180.213.168:8080/updateDevLogEdit/${id}`,
 			devlogData,
 		);
 		console.log('Saved successfully:', response.data);

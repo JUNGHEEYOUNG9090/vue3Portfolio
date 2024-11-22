@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import myPhoto from '/images/myPhoto.jpg';
+const myPhoto = 'http://54.180.213.16/images/myPhoto.jpg';
 </script>
 
 <style scoped></style>

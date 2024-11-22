@@ -105,7 +105,7 @@ const path2 = mdiNewBox;
 
 const fetchPosts = async () => {
 	try {
-		const response = await axios.get('http://localhost:8080/posts', {
+		const response = await axios.get('http://54.180.213.168:8080/posts', {
 			params: {
 				page: page.value,
 				size: size.value,
@@ -153,8 +153,8 @@ onMounted(fetchPosts);
 	border: 1px solid;
 }
 .background-container {
-	background-image: url('/images/pikachu.png'); /* 원하는 이미지 경로로 변경 */
-	background-size: 40vh; /* 배경 이미지 크기 조정 */
-	background-position: right; /* 배경 이미지 위치 조정 */
+	background-image: url('/images/pikachu.png'); /* public 폴더 안에 이미지가 있을 때 */
+	background-size: 40vh;
+	background-position: right;
 }
 </style>

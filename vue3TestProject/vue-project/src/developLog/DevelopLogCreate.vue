@@ -135,10 +135,10 @@ const addImage = async () => {
 			try {
 				// 서버에 이미지 업로드
 				const response = await axios.post(
-					'http://localhost:8080/uploadDevlogImage',
+					'http://54.180.213.168:8080/uploadDevlogImage',
 					formData,
 				);
-				const imageUrl = `http://localhost:8080/images/devlog/${response.data.filename}`; // 서버 URL 사용
+				const imageUrl = `http://54.180.213.168:8080/images/devlog/${response.data.filename}`; // 서버 URL 사용
 				console.log('Image URL:', imageUrl); // 이미지 URL 확인
 				if (imageUrl) {
 					editor.value.chain().focus().setImage({ src: imageUrl }).run();
@@ -173,7 +173,7 @@ const saveData = async () => {
 
 	try {
 		const response = await axios.post(
-			'http://localhost:8080/saveDevLog',
+			'http://54.180.213.168:8080/saveDevLog',
 			devlogData,
 		);
 		console.log('Saved successfully:', response.data);

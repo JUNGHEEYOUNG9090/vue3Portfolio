@@ -127,9 +127,9 @@ const formattedDate = formatDateToYYYYMMDD(today);
 const fetchImageData = async () => {
 	try {
 		const response = await axios.get(
-			`http://localhost:8080/images/${imageId}`, // URL 수정
+			`http://54.180.213.168:8080/images/${imageId}`, // URL 수정
 		);
-		uploadedImageUrl.value = `http://localhost:8080/files/${response.data.image_name}`;
+		uploadedImageUrl.value = `http://54.180.213.168:8080/files/${response.data.image_name}`;
 		cardText.value = response.data.image_text; // 응답 데이터의 프로퍼티 이름 확인
 		uploadedFileName.value = response.data.image_name;
 	} catch (error) {
@@ -169,7 +169,7 @@ const updateData = async () => {
 
 	try {
 		const response = await axios.put(
-			`http://localhost:8080/updateImageCard/${imageId}`,
+			`http://54.180.213.168:8080/updateImageCard/${imageId}`,
 			formData,
 		);
 		console.log('저장 성공:', response.data);
@@ -190,7 +190,7 @@ const showDeleteAlert = () => {
 const deleteData = async id => {
 	try {
 		const response = await axios.delete(
-			`http://localhost:8080/deleteImageCard/${imageId}`,
+			`http://54.180.213.168:8080/deleteImageCard/${imageId}`,
 		);
 		console.log(response.data); // 서버에서 반환된 메시지 출력
 		showDeleteAlert();

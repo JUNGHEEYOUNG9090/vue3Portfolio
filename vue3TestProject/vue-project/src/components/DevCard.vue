@@ -32,7 +32,7 @@
 						:src="
 							devLog.coverImage
 								? devLog.coverImage
-								: require('images/not_found_image.jpg')
+								: require('http://54.180.213.168/images/not_found_image.jpg')
 						"
 						:alt="devLog.title"
 						max-height="100px"

@@ -21,7 +21,7 @@
 				<v-col v-for="image in images" :key="image.id" cols="3">
 					<image-card
 						:imageId="image.image_id"
-						:imageSrc="`http://localhost:8080/files/${image.image_name}`"
+						:imageSrc="`http://54.180.213.168:8080/files/${image.image_name}`"
 						:text="image.image_text"
 						@click="goDetailPage(image.image_id)"
 					></image-card>
@@ -44,7 +44,7 @@ const images = ref([]);
 // API 호출 함수
 const fetchData = async () => {
 	try {
-		const response = await axios.get('http://localhost:8080/api/images');
+		const response = await axios.get('http://54.180.213.168:8080/api/images');
 		images.value = response.data;
 	} catch (error) {
 		console.error('Error fetching users:', error);

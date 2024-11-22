@@ -41,12 +41,12 @@ const router = useRouter();
 
 const fetchDevLogs = async () => {
 	try {
-		const response = await axios.get('http://localhost:8080/devLoglist');
+		const response = await axios.get('http://54.180.213.168:8080/devLoglist');
 		console.log('Fetched devLogs:', response.data); // 전체 응답 확인
 		devLogs.value = response.data.map(log => {
 			// coverImage 경로를 HTTP URL로 변환
 			const coverImage = log.coverImage
-				? `http://localhost:8080/images/devlog/${log.coverImage.split('/').pop()}`
+				? `http://54.180.213.168:8080/images/devlog/${log.coverImage.split('/').pop()}`
 				: null;
 			return { ...log, coverImage };
 		});

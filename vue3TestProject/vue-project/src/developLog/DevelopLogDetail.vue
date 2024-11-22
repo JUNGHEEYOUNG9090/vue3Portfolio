@@ -59,7 +59,7 @@ const imageUrls = ref([]);
 const fetchDevLogDetail = async id => {
 	try {
 		const response = await axios.get(
-			`http://localhost:8080/devlogDetail/${id}`,
+			`http://54.180.213.168:8080/devlogDetail/${id}`,
 		);
 		const devLog = response.data;
 
@@ -93,7 +93,9 @@ const deleteData = () => {
 	const id = route.params.id;
 	console.log('id:', id);
 	try {
-		const response = axios.delete(`http://localhost:8080/deleteDevlog/${id}`);
+		const response = axios.delete(
+			`http://54.180.213.168:8080/deleteDevlog/${id}`,
+		);
 		console.log(response.data); // 서버에서 반환된 메시지 출력
 		alert('삭제되었습니다.');
 		gobackListPage();
