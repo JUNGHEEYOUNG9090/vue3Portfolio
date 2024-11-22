@@ -1,8 +1,8 @@
 <template>
-	<div class="grid-background">
+	<div class="background">
 		<v-container>
 			<div>
-				<v-container class="background">
+				<v-container class="grid-background">
 					<v-row>
 						<h2 class="pa-4" style="color: #ff9800">{{ company }}</h2>
 					</v-row>
@@ -87,5 +87,12 @@ const props = defineProps({
 <style scoped>
 .grid-background {
 	background-color: transparent; /* 배경을 투명하게 설정 */
+}
+.background {
+	background-image: url('http://54.180.213.168:8080/public/images/carrerBack.jpg'); /* 배경 이미지 설정 */
+	background-size: 100%;
+	background-repeat: repeat;
+	max-width: 100%; /* 그리드의 너비에 맞춤 */
+	overflow: hidden; /* 이미지가 넘치지 않도록 설정 */
 }
 </style>
