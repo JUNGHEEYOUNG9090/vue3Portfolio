@@ -17,6 +17,7 @@ public class DevLogModel {
 
     @Lob  // Large Object로 선언하여 대량의 데이터를 저장
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String content;
     private String coverImage;
     private String create_dt;
